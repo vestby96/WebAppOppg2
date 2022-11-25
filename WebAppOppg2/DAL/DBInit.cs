@@ -37,7 +37,7 @@ namespace WebAppOppg2.DAL
                 city = "Asker",
                 address = "Askerveien 90",
                 shape = "Kule",
-                summary = "Kule på himmel, med masse stjerner"
+                summary = "Kule på himmel med masse stjerner"
             };
 
             db.Posts.Add(post1);

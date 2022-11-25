@@ -31,12 +31,12 @@ namespace WebAppOppg2.Controllers
                 bool returOK = await _db.Save(inPost);
                 if (!returOK)
                 {
-                    _log.LogInformation("Kunden kunne ikke lagres!");
+                    _log.LogInformation("Post was NOT saved");
                     return BadRequest();
                 }
                 return Ok(); // kan ikke returnere noe tekst da klient prøver å konvertere deene som en Json-streng
             }
-            _log.LogInformation("Feil i inputvalidering");
+            _log.LogInformation("Error in inputvalidation");
             return BadRequest();
         }
 

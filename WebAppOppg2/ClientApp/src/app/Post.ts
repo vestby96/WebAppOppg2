@@ -1,7 +1,7 @@
 ﻿export class Post {
     id: number;
-    datePosted: string;
-    dateOccured: string;
+    datePosted: Date;
+    dateOccured: Date;
     country: string;
     city: string;
     address: string;

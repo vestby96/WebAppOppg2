@@ -16,7 +16,7 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody *ngFor="let kunde of alleKunder">
+                <tbody *ngFor="let post of allPosts">
                     <tr>
                         <td>{{post.datePosted}}</td>
                         <td>{{post.dateOccured}}</td>
@@ -41,9 +41,6 @@
             <div class="form-group">
                 <label>Date Occured</label>
                 <input type="datetime-local" class="form-control" formControlName="dateOccured" />
-                <p class="alert alert-warning" [hidden]="schema.controls.dateOccured.valid || (schema.controls.dateOccured.pristine && !submitted)">
-                    Date Occured can't be empty!
-                </p>
             </div>
             <div class="form-group">
                 <label>Country</label>

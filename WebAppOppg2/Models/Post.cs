@@ -16,7 +16,7 @@ namespace WebAppOppg2.Models
         public string address { get; set; }
         [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,30}")]
         public string shape { get; set; }
-        [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,300}")]
+        [RegularExpression(@"[0-9a-zA-ZæøåÆØÅ. \-]{2,300}")]
         public string summary { get; set; }
     }
 }
