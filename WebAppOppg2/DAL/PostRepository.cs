@@ -19,12 +19,15 @@ namespace WebAppOppg2.DAL
         {
             try
             {
-                var newPost = new Post();
-                newPost.Country = inPost.Country;
-                newPost.City = inPost.City;
-                newPost.Address = inPost.Address;
-                newPost.Shape = inPost.Shape;
-                newPost.Summary = inPost.Summary;
+                var newPost = new Posts();
+                //newPost.Id = inPost.Id;
+                //newPost.DatePosted = inPost.DatePosted;
+                //newPost.DateOccured = inPost.DateOccured;
+                newPost.country = inPost.country;
+                newPost.city = inPost.city;
+                newPost.address = inPost.address;
+                newPost.shape = inPost.shape;
+                newPost.summary = inPost.summary;
 
                 _db.Posts.Add(newPost);
                 await _db.SaveChangesAsync();
@@ -43,14 +46,14 @@ namespace WebAppOppg2.DAL
             {
                 List<Post> allPosts = await _db.Posts.Select(p => new Post
                 {
-                    Id = p.Id,
-                    DatePosted = p.DatePosted,
-                    DateOccured = p.DateOccured,
-                    Country = p.Country,
-                    City = p.City,
-                    Address = p.Address,
-                    Shape = p.Shape,
-                    Summary = p.Summary
+                    id = p.id,
+                    datePosted = p.datePosted,
+                    dateOccured = p.dateOccured,
+                    country = p.country,
+                    city = p.city,
+                    address = p.address,
+                    shape = p.shape,
+                    summary = p.summary
                 }).ToListAsync();
                 return allPosts;
             }
@@ -64,7 +67,7 @@ namespace WebAppOppg2.DAL
         {
             try
             {
-                Post aDBPost = await _db.Posts.FindAsync(id);
+                Posts aDBPost = await _db.Posts.FindAsync(id);
                 _db.Posts.Remove(aDBPost);
                 await _db.SaveChangesAsync();
                 return true;
@@ -77,17 +80,17 @@ namespace WebAppOppg2.DAL
 
         public async Task<Post> GetOne(int id)
         {
-            Post aPost = await _db.Posts.FindAsync(id);
+            Posts aPost = await _db.Posts.FindAsync(id);
             var getPost = new Post()
             {
-                Id = aPost.Id,
-                DatePosted = aPost.DatePosted,
-                DateOccured = aPost.DateOccured,
-                Country = aPost.Country,
-                City = aPost.City,
-                Address = aPost.Address,
-                Shape = aPost.Shape,
-                Summary = aPost.Summary
+                id = aPost.id,
+                datePosted = aPost.datePosted,
+                dateOccured = aPost.dateOccured,
+                country = aPost.country,
+                city = aPost.city,
+                address = aPost.address,
+                shape = aPost.shape,
+                summary = aPost.summary
             };
             return getPost;
         }
@@ -96,13 +99,13 @@ namespace WebAppOppg2.DAL
         {
             try
             {
-                var editObject = await _db.Posts.FindAsync(editPost.Id);
-                editObject.DateOccured = editPost.DateOccured;
-                editObject.Country = editPost.Country;
-                editObject.City = editPost.City;
-                editObject.Address = editPost.Address;
-                editObject.Shape = editPost.Shape;
-                editObject.Summary = editPost.Summary;
+                var editObject = await _db.Posts.FindAsync(editPost.id);
+                editObject.dateOccured = editPost.dateOccured;
+                editObject.country = editPost.country;
+                editObject.city = editPost.city;
+                editObject.address = editPost.address;
+                editObject.shape = editPost.shape;
+                editObject.summary = editPost.summary;
                 await _db.SaveChangesAsync();
             }
             catch

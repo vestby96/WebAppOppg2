@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { Kunde } from "./Post";
+import { Post } from "./Post";
 
 @Component({
     selector: "app-root",
@@ -141,11 +141,11 @@ export class SPA {
         editPost.id = this.schema.value.id;
         editPost.datePosted = this.schema.value.datePosted;
         editPost.dateOccured = this.schema.value.dateOccured;
-        editPost.fornavn = this.schema.value.country;
-        editPost.etternavn = this.schema.value.city;
-        editPost.adresse = this.schema.value.address;
-        editPost.postnr = this.schema.value.shape;
-        editPost.poststed = this.schema.value.summary;
+        editPost.country = this.schema.value.country;
+        editPost.city = this.schema.value.city;
+        editPost.address = this.schema.value.address;
+        editPost.shape = this.schema.value.shape;
+        editPost.summary = this.schema.value.summary;
 
         this._http.put("api/post/", editPost)
             .subscribe(

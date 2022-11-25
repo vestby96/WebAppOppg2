@@ -7,14 +7,14 @@ namespace WebAppOppg2.DAL
 {
     public class Posts
     {
-        public int Id { get; set; }  // gir en primærnøkkel med autoincrement fordi attributten heter noe med "id"
-        public DateTime DatePosted { get; set; }
-        public DateTime DateOccured { get; set; }
-        public string Country { get; set; }
-        public string City { get; set; }
-        public string Address { get; set; }
-        public string Shape { get; set; }
-        public string Summary { get; set; }
+        public int id { get; set; }  // gir en primærnøkkel med autoincrement fordi attributten heter noe med "id"
+        public DateTime datePosted { get; set; }
+        public DateTime dateOccured { get; set; }
+        public string country { get; set; }
+        public string city { get; set; }
+        public string address { get; set; }
+        public string shape { get; set; }
+        public string summary { get; set; }
     }
 
     public class PostContext : DbContext

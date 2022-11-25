@@ -5,18 +5,18 @@ namespace WebAppOppg2.Models
 {
     public class Post
     {
-        public int Id { get; set; }
-        public DateTime DatePosted { get; set; }
-        public DateTime DateOccured { get; set; }
+        public int id { get; set; }
+        public DateTime datePosted { get; set; }
+        public DateTime dateOccured { get; set; }
         [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,30}")]
-        public string Country { get; set; }
+        public string country { get; set; }
         [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,30}")]
-        public string City { get; set; }
+        public string city { get; set; }
         [RegularExpression(@"[0-9a-zA-ZæøåÆØÅ. \-]{2,30}")]
-        public string Address { get; set; }
+        public string address { get; set; }
         [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,30}")]
-        public string Shape { get; set; }
+        public string shape { get; set; }
         [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,300}")]
-        public string Summary { get; set; }
+        public string summary { get; set; }
     }
 }

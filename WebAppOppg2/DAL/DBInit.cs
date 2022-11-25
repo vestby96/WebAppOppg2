@@ -20,24 +20,24 @@ namespace WebAppOppg2.DAL
 
             var post1 = new Posts
             {
-                DatePosted = Convert.ToDateTime("2022-11-15T13:45:30"),
-                DateOccured = Convert.ToDateTime("2009-06-11T21:45:00"),
-                Country = "Norge",
-                City = "Oslo",
-                Address = "Osloveien 82",
-                Shape = "Oval",
-                Summary = "Fly på himmel over mitt hode"
+                datePosted = Convert.ToDateTime("2022-11-15T13:45:30"),
+                dateOccured = Convert.ToDateTime("2009-06-11T21:45:00"),
+                country = "Norge",
+                city = "Oslo",
+                address = "Osloveien 82",
+                shape = "Oval",
+                summary = "Fly på himmel over mitt hode"
             };
 
             var post2 = new Posts
             {
-                DatePosted = Convert.ToDateTime("2022-10-16T12:45:00"),
-                DateOccured = Convert.ToDateTime("1995-02-05T23:45:00"),
-                Country = "Norge",
-                City = "Asker",
-                Address = "Askerveien 90",
-                Shape = "Kule",
-                Summary = "Kule på himmel, med masse stjerner"
+                datePosted = Convert.ToDateTime("2022-10-16T12:45:00"),
+                dateOccured = Convert.ToDateTime("1995-02-05T23:45:00"),
+                country = "Norge",
+                city = "Asker",
+                address = "Askerveien 90",
+                shape = "Kule",
+                summary = "Kule på himmel, med masse stjerner"
             };
 
             db.Posts.Add(post1);
