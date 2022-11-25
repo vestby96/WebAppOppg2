@@ -29,7 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\app-routing.module.ts" />
+    <None Remove="ClientApp\src\app\login\login.ts" />
     <None Remove="ClientApp\src\app\Post.ts" />
+    <None Remove="ClientApp\src\app\register\register.ts" />
     <None Remove="ClientApp\src\app\spa.ts" />
   </ItemGroup>
 
@@ -38,7 +41,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\app-routing.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\login\login.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\Post.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\register\register.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\spa.ts" />
   </ItemGroup>
 
