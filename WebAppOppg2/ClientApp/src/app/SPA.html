@@ -1,10 +1,91 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
+﻿<div class="container">
+    <h2>   UFO forum: Single Page Application</h2>
+    <div>
+        <div class="col-md-12" *ngIf="showArray">
+            <div *ngIf="loading">Loading posts.....</div>
+            <table class="table table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th>Date Posted</th>
+                        <th>Date Occured</th>
+                        <th>Country</th>
+                        <th>City</th>
+                        <th>Address</th>
+                        <th>Shape</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let kunde of alleKunder">
+                    <tr>
+                        <td>{{post.datePosted}}</td>
+                        <td>{{post.dateOccured}}</td>
+                        <td>{{post.country}}</td>
+                        <td>{{post.city}}</td>
+                        <td>{{post.address}}</td>
+                        <td>{{post.shape}}</td>
+                        <td><button class="btn btn-danger" (click)="deletePost(post.id)">Delete</button></td>
+                        <td><button class="btn btn-success" (click)="editPost(post.id)">Edit</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class='btn btn-primary' (click)='registerPost()'>New Post</button>
+        </div>
+    </div>
+</div>
 
-</body>
-</html>
+<div class="container">
+    <div class="col-md-4" *ngIf="!showArray">
+        <form [formGroup]="schema" (ngSubmit)="submit()">
+            <input class="form-control" formControlName="id" type="hidden" />
+            <div class="form-group">
+                <label>Date Occured</label>
+                <input class="form-control" formControlName="dateOccured" />
+                <p class="alert alert-warning" [hidden]="schema.controls.dateOccured.valid || (schema.controls.dateOccured.pristine && !submitted)">
+                    Date Occured can't be empty!
+                </p>
+            </div>
+            <div class="form-group">
+                <label>Country</label>
+                <input class="form-control" formControlName="country" />
+                <p class="alert alert-warning" [hidden]="schema.controls.country.valid || (schema.controls.country.pristine && !submitted)">
+                    Please fill out country
+                </p>
+            </div>
+            <div class="form-group">
+                <label>City</label>
+                <input class="form-control" formControlName="city" />
+                <p class="alert alert-warning" [hidden]="schema.controls.city.valid || (schema.controls.city.pristine && !submitted)">
+                    Please fill out city
+                </p>
+            </div>
+            <div class="form-group">
+                <label>Address</label>
+                <input class="form-control" formControlName="address" />
+                <p class="alert alert-warning" [hidden]="schema.controls.address.valid || (schema.controls.address.pristine && !submitted)">
+                    Please fill out address
+                </p>
+            </div>
+            <div class="form-group">
+                <label>Shape</label>
+                <input class="form-control" formControlName="shape" />
+                <p class="alert alert-warning" [hidden]="schema.controls.shape.valid || (schema.controls.shape.pristine && !submitted)">
+                    Please fill out shape
+                </p>
+            </div>
+            <div class="form-group">
+                <label>Summary</label>
+                <input class="form-control" formControlName="summary" />
+                <p class="alert alert-warning" [hidden]="schema.controls.summary.valid || (schema.controls.summary.pristine && !submitted)">
+                    Please fill out summary
+                </p>
+            </div>
+            <div class="form-group">
+                <button type="submit" *ngIf="showSchemaRegister" [disabled]="!schema.valid" class="btn btn-primary">Post</button>
+                <button type="submit" *ngIf="!showSchemaRegister" [disabled]="!schema.valid" class="btn btn-primary">Edit</button>
+                <button class="btn btn-default" (click)="backToList()">Back</button>
+            </div>
+        </form>
+    </div>
+</div>
+
