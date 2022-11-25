@@ -89,6 +89,10 @@ export class SPA {
 
     savePost() {
         const savedPost = new Post();
+        // sjekker om datoen er tom
+        if (!this.schema.value.datePosted) {
+            this.schema.value.datePosted = new Date();
+        }
 
         savedPost.datePosted = this.schema.value.datePosted;
         savedPost.dateOccured = this.schema.value.dateOccured;
