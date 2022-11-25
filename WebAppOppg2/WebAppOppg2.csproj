@@ -29,7 +29,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\Post.ts" />
+    <None Remove="ClientApp\src\app\spa.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Logs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\Post.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\spa.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
