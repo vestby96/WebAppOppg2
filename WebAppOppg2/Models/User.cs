@@ -1,21 +1,22 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebAppOppg2.Models
 {
     public class User
     {
-        public int usid { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 0)]
+        public Guid? Id { get; set; }
 
         [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,30}")]
-        public string firstName { get; set; }
+        public string FirstName { get; set; }
         [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,30}")]
-        public string lastName { get; set; }
+        public string LastName { get; set; }
         [RegularExpression(@"[0-9a-zA-ZæøåÆØÅ. \-]{2,30}")]
-        public string username { get; set; }
+        public string Username { get; set; }
         [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,30}")]
-        public string password { get; set; }
-        [RegularExpression(@"[0-9a-zA-ZæøåÆØÅ. \-]{2,40}")]
-        public string email { get; set; }
+        public string Password { get; set; }
     }
 }

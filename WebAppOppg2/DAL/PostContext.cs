@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WebAppOppg2.Models;
 
 namespace WebAppOppg2.DAL
 {
@@ -17,6 +19,18 @@ namespace WebAppOppg2.DAL
         public string summary { get; set; }
     }
 
+    public class Users
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 0)]
+        public Guid? Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Username { get; set; }
+        public byte[] Password { get; set; }
+        public byte[] Salt { get; set; }
+    }
+
     public class PostContext : DbContext
     {
         public PostContext(DbContextOptions<PostContext> options)
@@ -29,6 +43,8 @@ namespace WebAppOppg2.DAL
         }
 
         public DbSet<Posts> Posts { get; set; }
+
+        public DbSet<Users> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

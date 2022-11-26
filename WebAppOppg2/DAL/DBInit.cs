@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
@@ -40,6 +41,18 @@ namespace WebAppOppg2.DAL
                 summary = "Kule på himmel med masse stjerner"
             };
 
+            //Lag en påloggingsbruker
+            var user = new Users();
+            user.FirstName = "John";
+            user.LastName = "Doe";
+            user.Username = "admin";
+            string password = "admin123";
+            byte[] salt = PostRepository.MakeSalt();
+            byte[] hash = PostRepository.MakeHash(password, salt);
+            user.Password = hash;
+            user.Salt = salt;
+
+            db.Users.Add(user);
             db.Posts.Add(post1);
             db.Posts.Add(post2);
 

@@ -12,5 +12,7 @@ namespace WebAppOppg2.DAL
         Task<bool> Delete(int id);
         Task<Post> GetOne(int id);
         Task<bool> Edit(Post editPost);
+        Task<bool> LoggInn(User user);
+        //Task<bool> Register(User user);
     }
 }

@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using WebAppOppg2.DAL;
@@ -91,6 +94,31 @@ namespace WebAppOppg2.Controllers
             }
             _log.LogInformation("Error in inputvalidation");
             return BadRequest();
+        }
+
+        public class Users
+        {
+            public Guid? Id { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string Username { get; set; }
+            public byte[] Passord { get; set; }
+            public byte[] Salt { get; set; }
+        }
+        public async Task<ActionResult> LoggInn(User user)
+        {
+            if (ModelState.IsValid)
+            {
+                bool returnOK = await _db.LoggInn(user);
+                if (!returnOK)
+                {
+                    _log.LogInformation("Innloggingen feilet for bruker" + user.Username);
+                    return Ok(false);
+                }
+                return Ok(true);
+            }
+            _log.LogInformation("Feil i inputvalidering");
+            return BadRequest("Feil i inputvalidering på server");
         }
     }
 }
