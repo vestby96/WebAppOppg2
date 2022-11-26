@@ -1,13 +1,13 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, FormArray } from '@angular/forms';
 import { Post } from "./Post";
 
 @Component({
     selector: "app-root",
     templateUrl: "SPA.html"
 })
-export class SPA {
+export class SPA implements OnInit {
 
     showSchemaRegister: boolean;
     showArray: boolean;
@@ -57,7 +57,7 @@ export class SPA {
             );
     };
 
-    submit() {
+    onSubmit() {
         if (this.showSchemaRegister) {
             this.savePost();
         }
@@ -87,14 +87,20 @@ export class SPA {
         this.showArray = true;
     }
 
+    formatDate(date: Date) {
+        
+    }
+
     savePost() {
         const savedPost = new Post();
         // sjekker om datoen er tom
         if (!this.schema.value.datePosted) {
-            this.schema.value.datePosted = new Date();
+            this.schema.value.datePosted = new Date().toISOString;
+        }
+        else {
+            savedPost.datePosted = this.schema.value.datePosted;
         }
 
-        savedPost.datePosted = this.schema.value.datePosted;
         savedPost.dateOccured = this.schema.value.dateOccured;
         savedPost.country = this.schema.value.country;
         savedPost.city = this.schema.value.city;
@@ -160,4 +166,36 @@ export class SPA {
                 error => console.log(error)
             );
     }
+
+    toggleSort: boolean = false;
+    sortByDatePosted() {
+        let sortedArray;
+        if (this.toggleSort) {
+            sortedArray = this.allPosts.sort((a, b) => (a.datePosted < b.datePosted) ? -1 : 1);
+            this.toggleSort = false;
+        }
+        else {
+            sortedArray = this.allPosts.sort((a, b) => (a.datePosted > b.datePosted) ? -1 : 1);
+            this.toggleSort = true;
+        }
+        console.log(JSON.stringify(sortedArray))
+    }
+
+    sortByDateOccured() {
+        let sortedArray;
+        if (this.toggleSort) {
+            sortedArray = this.allPosts.sort((a, b) => (a.dateOccured < b.dateOccured) ? -1 : 1);
+            this.toggleSort = false;
+        }
+        else {
+            sortedArray = this.allPosts.sort((a, b) => (a.dateOccured > b.dateOccured) ? -1 : 1);
+            this.toggleSort = true;
+        }
+        console.log(JSON.stringify(sortedArray))
+    }
+    /*
+    searchArray() {
+
+    }
+    */
 }

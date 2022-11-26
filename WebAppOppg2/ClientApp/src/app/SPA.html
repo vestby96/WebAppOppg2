@@ -3,15 +3,18 @@
     <div>
         <div class="col-md-12" *ngIf="showArray">
             <div *ngIf="loading">Loading posts.....</div>
-            <table class="table table-bordered table-condensed">
+            <button class="btn btn-default" (click)="sortByDatePosted()">Sort by date posted</button>
+            <button class="btn btn-default" (click)="sortByDateOccured()">Sort by date of occuranse</button>
+            <!--<input class="" id="searchbar" placeholder="Search" (click)=""/>-->
+            <table id="display" class="table table-bordered table-condensed">
                 <thead>
-                    <tr>
-                        <th>Date Posted</th>
-                        <th>Date Occured</th>
-                        <th>Country</th>
-                        <th>City</th>
-                        <th>Address</th>
-                        <th>Shape</th>
+                    <tr style="cursor: pointer;">
+                        <th onclick='sortTable(0)'>Date Posted</th>
+                        <th onclick='sortTable(1)'>Date Occured</th>
+                        <th onclick='sortTable(2)'>Country</th>
+                        <th onclick='sortTable(3)'>City</th>
+                        <th onclick='sortTable(4)'>Address</th>
+                        <th onclick='sortTable(5)'>Shape</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -36,7 +39,7 @@
 
 <div class="container">
     <div class="col-md-4" *ngIf="!showArray">
-        <form [formGroup]="schema" (ngSubmit)="submit()">
+        <form [formGroup]="schema" (ngSubmit)="onSubmit()">
             <input class="form-control" formControlName="id" type="hidden" />
             <div class="form-group">
                 <label>Date Occured</label>
