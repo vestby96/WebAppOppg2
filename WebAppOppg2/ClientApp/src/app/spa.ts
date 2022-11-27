@@ -202,28 +202,29 @@ export class SPA implements OnInit {
     }
 
     searchArray() {
-        
-        var filter = document.getElementById("searchbar") as HTMLInputElement;
-        var value = filter.value.toUpperCase();
-        var array = this.allPosts;
-        var i, j, filtered, post;
-        for (i = 1; i < array.length; i++) { // løkke som går gjennom alle radene i tabelen
+        var filter, value, row, cols, filtered, i, j, table;
+        filter = document.getElementById("searchbar") as HTMLInputElement;
+        value = filter.value.toUpperCase();
+
+        table = document.getElementById("display") as HTMLTableElement;
+        row = table.getElementsByTagName("tr") as HTMLTableRowElement;
+
+        for (i = 1; i < row.length; i++) { // løkke som går gjennom alle radene i tabelen
             filtered = false; // variabel som brukes til å markere om en rad skal vises eller ikke
-            post = array[i]; // henter alle kolonnene i en spesifikk rad
-            for (j = 0; j < post.length; j++) { // løkke som går gjennom alle kolonnene i raden
-                if (post[j]) { // dersom kolonnen ikke er tom kjører denne
-                    if (post[j].toUpperCase().indexOf(value) > -1) { // sjekker innholdet i cellen om det matcher med søket
+            cols = row[i].getElementsByTagName("td"); // henter alle kolonnene i en spesifikk rad
+            for (j = 0; j < (cols.length - 2); j++) { // løkke som går gjennom alle kolonnene i raden
+                if (cols[j]) { // dersom kolonnen ikke er tom kjører denne
+                    if (cols[j].innerHTML.toUpperCase().indexOf(value) > -1) { // sjekker innholdet i cellen om det matcher med søket
                         filtered = true; // dersom det er en match blir filtered satt til true
                     }
                 }
             }
-            if (filtered == true) { // dersom filtered er lik true blir raden vist
-                
+            if (filtered === true) { // dersom filtered er lik true blir raden vist
+                row[i].style.display = '';
             }
             else { // dersom filtered er lik false blir raden ikke vist
-                array.splice(array.indexOf(array[i], 1));
+                row[i].style.display = 'none';
             }
         }
-        console.log(array);
     }
 }
