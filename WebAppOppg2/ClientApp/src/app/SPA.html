@@ -3,7 +3,7 @@
     <div>
         <div class="col-md-12" *ngIf="showArray">
             <div *ngIf="loading">Loading posts.....</div>
-            <input id="searchbar" placeholder="Search" (keyup)="searchArray()"/>
+            <input id="searchbar" placeholder="Search" (keyup)="searchArray()" />
             <table id="display" class="table table-bordered table-condensed">
                 <thead>
                     <tr>
@@ -13,6 +13,7 @@
                         <th>City</th>
                         <th>Address</th>
                         <th>Shape</th>
+                        <th></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -27,16 +28,52 @@
                         <td>{{post.shape}}</td>
                         <td><button class="btn btn-danger" (click)="deletePost(post.id)">Delete</button></td>
                         <td><button class="btn btn-success" (click)="editPost(post.id)">Edit</button></td>
+                        <td><button class="btn btn-primary" (click)="postDetails(post.id)">Details</button></td>
                     </tr>
                 </tbody>
             </table>
             <button class='btn btn-primary' (click)='registerPost()'>New Post</button>
         </div>
+
+        <div class="col-md-12" *ngIf="showDetails">
+            <div *ngIf="loading">Loading post.....</div>
+            <table class="table table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th>Date Posted</th>
+                        <th>Date Occured</th>
+                        <th>Country</th>
+                        <th>City</th>
+                        <th>Address</th>
+                        <th>Shape</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{singlePost.datePosted}}</td>
+                        <td>{{singlePost.dateOccured}}</td>
+                        <td>{{singlePost.country}}</td>
+                        <td>{{singlePost.city}}</td>
+                        <td>{{singlePost.address}}</td>
+                        <td>{{singlePost.shape}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered table-condensed">
+                <tr>
+                    <th>Summary</th>
+                </tr>
+                <tr>
+                    <td>{{singlePost.summary}}</td>
+                </tr>
+            </table>
+            <button class="btn btn-primary" (click)="backToList()">Back</button>
+        </div>
     </div>
 </div>
 
 <div class="container">
-    <div class="col-md-4" *ngIf="!showArray">
+    <div class="col-md-4" *ngIf="showSchemaRegister">
         <form [formGroup]="schema" (ngSubmit)="onSubmit()">
             <input class="form-control" formControlName="id" type="hidden" />
             <div class="form-group">
@@ -81,7 +118,7 @@
             <div class="form-group">
                 <button type="submit" *ngIf="showSchemaRegister" [disabled]="!schema.valid" class="btn btn-primary">Post</button>
                 <button type="submit" *ngIf="!showSchemaRegister" [disabled]="!schema.valid" class="btn btn-primary">Edit</button>
-                <button class="btn btn-default" (click)="backToList()">Back</button>
+                <button class="btn btn-primary" (click)="backToList()">Back</button>
             </div>
         </form>
     </div>

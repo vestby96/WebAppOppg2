@@ -9,11 +9,14 @@ import { Post } from "./Post";
 })
 export class SPA implements OnInit {
 
+    showDetails: boolean;
     showSchemaRegister: boolean;
     showArray: boolean;
     allPosts: Array<Post>;
     schema: FormGroup;
     loading: boolean;
+    toggleSort: boolean = true;
+    singlePost: Post;
 
     validation = {
         id: [""],
@@ -44,6 +47,8 @@ export class SPA implements OnInit {
         this.loading = true;
         this.getAllPosts();
         this.showArray = true;
+        this.showDetails = false;
+        this.showSchemaRegister = false;
     }
 
     getAllPosts() {
@@ -54,8 +59,8 @@ export class SPA implements OnInit {
             },
                 error => console.log(error),
                 () => console.log("done get-api/post")
-            );
-    };
+        );
+    }
 
     onSubmit() {
         if (this.showSchemaRegister) {
@@ -80,15 +85,14 @@ export class SPA implements OnInit {
         });
         this.schema.markAsPristine();
         this.showArray = false;
+        this.showDetails = false;
         this.showSchemaRegister = true;
     }
 
     backToList() {
         this.showArray = true;
-    }
-
-    formatDate(date: Date) {
-        
+        this.showDetails = false;
+        this.showSchemaRegister = false;
     }
 
     savePost() {
@@ -111,8 +115,9 @@ export class SPA implements OnInit {
         this._http.post("api/post", savedPost)
             .subscribe(retur => {
                 this.getAllPosts();
-                this.showSchemaRegister = false;
                 this.showArray = true;
+                this.showDetails = false;
+                this.showSchemaRegister = false;
             },
                 error => console.log(error)
             );
@@ -142,8 +147,11 @@ export class SPA implements OnInit {
                 },
                 error => console.log(error)
         );
-        this.showSchemaRegister = false;
+
         this.showArray = false;
+        this.showDetails = false;
+        this.showSchemaRegister = true;
+        console.log(id);
     }
 
     editAPost() {
@@ -162,23 +170,38 @@ export class SPA implements OnInit {
                 retur => {
                     this.getAllPosts();
                     this.showArray = true;
+                    this.showDetails = false;
+                    this.showSchemaRegister = false;
                 },
                 error => console.log(error)
             );
     }
 
-    toggleSort: boolean = false;
+    postDetails(id: number) {
+        this._http.get<Post>("api/post/" + id)
+            .subscribe(post => {
+                this.singlePost = post;
+                this.loading = false;
+                this.showArray = false;
+                this.showDetails = true;
+                this.showSchemaRegister = false;
+
+            },
+                error => console.log(error),
+                () => console.log("done get-api/post" + id)
+            );
+    }
+
     sortByDatePosted() {
-        let sortedArray;
+        var sortedArray = this.allPosts;
         if (this.toggleSort) {
-            sortedArray = this.allPosts.sort((a, b) => (a.datePosted < b.datePosted) ? -1 : 1);
+            sortedArray.sort((a, b) => (a.datePosted < b.datePosted) ? -1 : 1);
             this.toggleSort = false;
         }
         else {
-            sortedArray = this.allPosts.sort((a, b) => (a.datePosted > b.datePosted) ? -1 : 1);
+            sortedArray.sort((a, b) => (a.datePosted > b.datePosted) ? -1 : 1);
             this.toggleSort = true;
         }
-        console.log(JSON.stringify(sortedArray))
     }
 
     sortByDateOccured() {
@@ -191,14 +214,6 @@ export class SPA implements OnInit {
             sortedArray = this.allPosts.sort((a, b) => (a.dateOccured > b.dateOccured) ? -1 : 1);
             this.toggleSort = true;
         }
-        console.log(JSON.stringify(sortedArray))
-    }
-
-    test(value) {
-        return value >= 10;
-    }
-    filter() {
-        
     }
 
     searchArray() {
@@ -212,7 +227,7 @@ export class SPA implements OnInit {
         for (i = 1; i < row.length; i++) { // løkke som går gjennom alle radene i tabelen
             filtered = false; // variabel som brukes til å markere om en rad skal vises eller ikke
             cols = row[i].getElementsByTagName("td"); // henter alle kolonnene i en spesifikk rad
-            for (j = 0; j < (cols.length - 2); j++) { // løkke som går gjennom alle kolonnene i raden
+            for (j = 0; j < (cols.length - 3); j++) { // løkke som går gjennom alle kolonnene i raden
                 if (cols[j]) { // dersom kolonnen ikke er tom kjører denne
                     if (cols[j].innerHTML.toUpperCase().indexOf(value) > -1) { // sjekker innholdet i cellen om det matcher med søket
                         filtered = true; // dersom det er en match blir filtered satt til true

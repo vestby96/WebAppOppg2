@@ -40,8 +40,32 @@ namespace WebAppOppg2.DAL
                 summary = "Kule på himmel med masse stjerner"
             };
 
+            var post3 = new Posts
+            {
+                datePosted = Convert.ToDateTime("2022-11-15T13:45:30"),
+                dateOccured = Convert.ToDateTime("2009-06-11T21:45:00"),
+                country = "Norge",
+                city = "Bergen",
+                address = "Osloveien 82",
+                shape = "Oval",
+                summary = "Fly på himmel over mitt hode"
+            };
+
+            var post4 = new Posts
+            {
+                datePosted = Convert.ToDateTime("2022-11-15T13:45:30"),
+                dateOccured = Convert.ToDateTime("2009-06-11T21:45:00"),
+                country = "Norge",
+                city = "Stavanger",
+                address = "Stangveien 82",
+                shape = "Oval",
+                summary = "Fly på himmel over mitt hode"
+            };
+
             db.Posts.Add(post1);
             db.Posts.Add(post2);
+            db.Posts.Add(post3);
+            db.Posts.Add(post4);
 
             db.SaveChanges();
         }
