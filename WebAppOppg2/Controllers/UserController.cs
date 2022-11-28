@@ -19,6 +19,9 @@ namespace WebAppOppg2.Controllers
 
         private ILogger<UserController> _log;
 
+        // usikker på om det er greit at denne er public?????????????
+        public const string _loggedIn = "LoggedIn";
+
         public UserController(IUserRepository db, ILogger<UserController> log)
         {
             _db = db;
@@ -26,7 +29,6 @@ namespace WebAppOppg2.Controllers
         }
 
         [HttpPost]
-
         public async Task<ActionResult> Register(User inUser)
         {
             if (ModelState.IsValid)
@@ -43,7 +45,7 @@ namespace WebAppOppg2.Controllers
             return BadRequest();
         }
 
-
+        [HttpGet("{User}")]
         public async Task<ActionResult> LoggInn(User user)
         {
             if (ModelState.IsValid)
@@ -51,13 +53,20 @@ namespace WebAppOppg2.Controllers
                 bool returnOK = await _db.LoggInn(user);
                 if (!returnOK)
                 {
-                    _log.LogInformation("Innloggingen feilet for bruker" + user.Username);
+                    _log.LogInformation("Innloggingen feilet for bruker" + user.username);
+                    HttpContext.Session.SetString(_loggedIn, "");
                     return Ok(false);
                 }
+                HttpContext.Session.SetString(_loggedIn, "LoggedIn");
                 return Ok(true);
             }
             _log.LogInformation("Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
+        }
+
+        public void LoggOut()
+        {
+            HttpContext.Session.SetString(_loggedIn, "");
         }
     }
 }

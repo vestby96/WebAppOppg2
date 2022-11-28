@@ -47,14 +47,14 @@ namespace WebAppOppg2.DAL
 
             //Lag en påloggingsbruker
             var user = new User();
-            user.FirstName = "John";
-            user.LastName = "Doe";
-            user.Username = "admin";
+            user.firstName = "John";
+            user.lastName = "Doe";
+            user.username = "admin";
             string password = "admin123";
             byte[] salt = UserRepository.MakeSalt();
             byte[] hash = UserRepository.MakeHash(password, salt);
-            user.PasswordHashed = hash;
-            user.Salt = salt;
+            user.passwordHashed = hash;
+            user.salt = salt;
 
             db.Users.Add(user);
             db.Posts.Add(post1);

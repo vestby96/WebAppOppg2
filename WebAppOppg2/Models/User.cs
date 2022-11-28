@@ -8,19 +8,19 @@ namespace WebAppOppg2.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key, Column(Order = 0)]
-        public Guid? Id { get; set; }
+        public Guid? id { get; set; }
 
         [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,30}")]
-        public string FirstName { get; set; }
+        public string firstName { get; set; }
         [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,30}")]
-        public string LastName { get; set; }
+        public string lastName { get; set; }
         [RegularExpression(@"[0-9a-zA-ZæøåÆØÅ. \-]{2,30}")]
-        public string Username { get; set; }
-        public byte[] PasswordHashed { get; set; }
+        public string username { get; set; }
+        public byte[] passwordHashed { get; set; }
 
         [NotMapped]
-        public string Password { get; set; }
+        public string password { get; set; }
 
-        public byte[] Salt { get; set; }
+        public byte[] salt { get; set; }
     }
 }

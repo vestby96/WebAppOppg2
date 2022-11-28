@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 using WebAppOppg2.DAL;
 
 namespace WebAppOppg2
@@ -28,6 +29,14 @@ namespace WebAppOppg2
                             options.UseSqlite("Data Source=Post.db"));
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = ".AdventureWorks.Session";
+                options.IdleTimeout = TimeSpan.FromSeconds(1800); // 30 minutter
+                options.Cookie.IsEssential = true;
+            });
+            // Denne må også være med:
+            services.AddDistributedMemoryCache();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -58,6 +67,9 @@ namespace WebAppOppg2
             {
                 app.UseSpaStaticFiles();
             }
+
+            // UseSession!
+            app.UseSession();
 
             app.UseRouting();
 

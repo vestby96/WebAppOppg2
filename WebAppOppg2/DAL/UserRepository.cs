@@ -24,13 +24,13 @@ namespace WebAppOppg2.DAL
             try
             {
                 var newUser = new User();
-                newUser.FirstName = user.FirstName;
-                newUser.LastName = user.LastName;
-                newUser.Username = user.Username;
+                newUser.firstName = user.firstName;
+                newUser.lastName = user.lastName;
+                newUser.username = user.username;
                 byte[] salt = UserRepository.MakeSalt();
-                byte[] hash = UserRepository.MakeHash(user.Password, salt);
-                newUser.PasswordHashed = hash;
-                newUser.Salt = salt;
+                byte[] hash = UserRepository.MakeHash(user.password, salt);
+                newUser.passwordHashed = hash;
+                newUser.salt = salt;
 
                 _db.Users.Add(newUser);
                 await _db.SaveChangesAsync();
@@ -64,10 +64,10 @@ namespace WebAppOppg2.DAL
         {
             try
             {
-                User funnetBruker = await _db.Users.FirstOrDefaultAsync(b => b.Username == user.Username);
+                User funnetBruker = await _db.Users.FirstOrDefaultAsync(b => b.username == user.username);
                 // sjekk passordet
-                byte[] hash = MakeHash(user.Password, funnetBruker.Salt);
-                bool ok = hash.SequenceEqual(funnetBruker.PasswordHashed);
+                byte[] hash = MakeHash(user.password, funnetBruker.salt);
+                bool ok = hash.SequenceEqual(funnetBruker.passwordHashed);
                 if (ok)
                 {
                     return true;

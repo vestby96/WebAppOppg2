@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -29,6 +30,10 @@ namespace WebAppOppg2.Controllers
         [HttpPost]
         public async Task<ActionResult> Save(Post inPost)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(UserController._loggedIn)))
+            {
+                return Unauthorized();
+            }
             if (ModelState.IsValid)
             {
                 bool returOK = await _db.Save(inPost);
@@ -46,6 +51,10 @@ namespace WebAppOppg2.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(UserController._loggedIn)))
+            {
+                return Unauthorized();
+            }
             List<Post> allPosts = await _db.GetAll();
             return Ok(allPosts);
         }
@@ -53,6 +62,10 @@ namespace WebAppOppg2.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(UserController._loggedIn)))
+            {
+                return Unauthorized();
+            }
             bool returOK = await _db.Delete(id);
             if (!returOK)
             {
@@ -65,6 +78,10 @@ namespace WebAppOppg2.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult> GetOne(int id)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(UserController._loggedIn)))
+            {
+                return Unauthorized();
+            }
             if (ModelState.IsValid)
             {
                 Post post = await _db.GetOne(id);
@@ -82,6 +99,10 @@ namespace WebAppOppg2.Controllers
         [HttpPut]
         public async Task<ActionResult> Edit(Post editPost)
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(UserController._loggedIn)))
+            {
+                return Unauthorized();
+            }
             if (ModelState.IsValid)
             {
                 bool returOK = await _db.Edit(editPost);
