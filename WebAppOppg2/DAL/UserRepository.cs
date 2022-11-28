@@ -27,7 +27,11 @@ namespace WebAppOppg2.DAL
                 newUser.FirstName = user.FirstName;
                 newUser.LastName = user.LastName;
                 newUser.Username = user.Username;
-                newUser.Password = user.Password;
+                byte[] salt = UserRepository.MakeSalt();
+                byte[] hash = UserRepository.MakeHash(user.Password, salt);
+                newUser.PasswordHashed = hash;
+                newUser.Salt = salt;
+
                 _db.Users.Add(newUser);
                 await _db.SaveChangesAsync();
                 return true;

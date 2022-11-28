@@ -19,7 +19,6 @@ namespace WebAppOppg2.Models
         public byte[] PasswordHashed { get; set; }
 
         [NotMapped]
-
         public string Password { get; set; }
 
         public byte[] Salt { get; set; }

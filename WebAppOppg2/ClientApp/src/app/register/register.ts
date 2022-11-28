@@ -47,7 +47,7 @@ export class Register {
                 this.router.navigate(['/login']);
             },
                 error => console.log(error)
-            );
+        );
     };
 }
 
