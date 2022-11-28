@@ -20,7 +20,7 @@ namespace WebAppOppg2.DAL
 
             var post1 = new Posts
             {
-                datePosted = Convert.ToDateTime("2022-11-15T13:45:30"),
+                datePosted = "2022-11-15",
                 dateOccured = Convert.ToDateTime("2009-06-11T21:45:00"),
                 country = "Norge",
                 city = "Oslo",
@@ -31,7 +31,7 @@ namespace WebAppOppg2.DAL
 
             var post2 = new Posts
             {
-                datePosted = Convert.ToDateTime("2022-10-16T12:45:00"),
+                datePosted = "2022-10-16",
                 dateOccured = Convert.ToDateTime("1995-02-05T23:45:00"),
                 country = "Norge",
                 city = "Asker",
@@ -42,7 +42,7 @@ namespace WebAppOppg2.DAL
 
             var post3 = new Posts
             {
-                datePosted = Convert.ToDateTime("2022-11-15T13:45:30"),
+                datePosted = "2022-11-15",
                 dateOccured = Convert.ToDateTime("2009-06-11T21:45:00"),
                 country = "Norge",
                 city = "Bergen",
@@ -53,7 +53,7 @@ namespace WebAppOppg2.DAL
 
             var post4 = new Posts
             {
-                datePosted = Convert.ToDateTime("2022-11-15T13:45:30"),
+                datePosted = "2022-11-15",
                 dateOccured = Convert.ToDateTime("2009-06-11T21:45:00"),
                 country = "Norge",
                 city = "Stavanger",

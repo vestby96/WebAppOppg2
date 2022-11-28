@@ -95,16 +95,19 @@ export class SPA implements OnInit {
         this.showSchemaRegister = false;
     }
 
+    formatDate(date: string) {
+        var str = date.split(".")
+        return str[0];
+    }
+
     savePost() {
         const savedPost = new Post();
-        // sjekker om datoen er tom
-        if (!this.schema.value.datePosted) {
-            this.schema.value.datePosted = new Date().toISOString;
-        }
-        else {
-            savedPost.datePosted = this.schema.value.datePosted;
-        }
 
+        var date = new Date();
+        var str: string;
+        str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+
+        savedPost.datePosted = str;
         savedPost.dateOccured = this.schema.value.dateOccured;
         savedPost.country = this.schema.value.country;
         savedPost.city = this.schema.value.city;

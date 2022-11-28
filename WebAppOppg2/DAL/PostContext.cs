@@ -8,7 +8,7 @@ namespace WebAppOppg2.DAL
     public class Posts
     {
         public int id { get; set; }  // gir en primærnøkkel med autoincrement fordi attributten heter noe med "id"
-        public DateTime datePosted { get; set; }
+        public string datePosted { get; set; }
         public DateTime dateOccured { get; set; }
         public string country { get; set; }
         public string city { get; set; }

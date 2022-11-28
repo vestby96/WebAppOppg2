@@ -20,9 +20,8 @@ namespace WebAppOppg2.DAL
             try
             {
                 var newPost = new Posts();
-                //newPost.Id = inPost.Id;
-                //newPost.DatePosted = inPost.DatePosted;
-                //newPost.DateOccured = inPost.DateOccured;
+                newPost.datePosted = inPost.datePosted;
+                newPost.dateOccured = inPost.dateOccured;
                 newPost.country = inPost.country;
                 newPost.city = inPost.city;
                 newPost.address = inPost.address;
