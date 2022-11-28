@@ -1,24 +1,25 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Post } from "./Post";
 
 @Component({
     selector: "app-root",
     templateUrl: "SPA.html"
 })
+
 export class SPA implements OnInit {
+                                    // variabler
+    showDetails: boolean;           // true når detaljer om en post skal vises
+    showSchemaRegister: boolean;    // true når input-skjema skal vises
+    showTable: boolean;             // true når tabellen skal vises
+    loading: boolean;               // true når siden laster
+    toggleSort: boolean = true;     // toggle mellom sorterings retninger
+    allPosts: Array<Post>;          // array med alle poster
+    schema: FormGroup;              // skjema for utfylling av post
+    singlePost: Post;               // brukes for å hente ut en post
 
-    showDetails: boolean;
-    showSchemaRegister: boolean;
-    showArray: boolean;
-    allPosts: Array<Post>;
-    schema: FormGroup;
-    loading: boolean;
-    toggleSort: boolean = true;
-    singlePost: Post;
-
-    validation = {
+    validation = { // inputvalidering av post
         id: [""],
         datePosted: [""],
         dateOccured: [""],
@@ -38,15 +39,15 @@ export class SPA implements OnInit {
             null, Validators.compose([Validators.required, Validators.pattern("[0-9a-zA-ZøæåØÆÅ\\-. ]{2,300}")])
         ]
     }
-
-    constructor(private _http: HttpClient, private fb: FormBuilder) {
+    
+    constructor(private _http: HttpClient, private fb: FormBuilder) { // konstruktør, oppretter HttpClient og Formbuilder
         this.schema = fb.group(this.validation);
     }
 
-    ngOnInit() {
+    ngOnInit() { // 
         this.loading = true;
         this.getAllPosts();
-        this.showArray = true;
+        this.showTable = true;
         this.showDetails = false;
         this.showSchemaRegister = false;
     }
@@ -84,20 +85,15 @@ export class SPA implements OnInit {
             summary: ""
         });
         this.schema.markAsPristine();
-        this.showArray = false;
+        this.showTable = false;
         this.showDetails = false;
         this.showSchemaRegister = true;
     }
 
     backToList() {
-        this.showArray = true;
+        this.showTable = true;
         this.showDetails = false;
         this.showSchemaRegister = false;
-    }
-
-    formatDate(date: string) {
-        var str = date.split(".")
-        return str[0];
     }
 
     savePost() {
@@ -106,7 +102,7 @@ export class SPA implements OnInit {
         var date = new Date();
         var str: string;
         str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-
+        
         savedPost.datePosted = str;
         savedPost.dateOccured = this.schema.value.dateOccured;
         savedPost.country = this.schema.value.country;
@@ -118,7 +114,7 @@ export class SPA implements OnInit {
         this._http.post("api/post", savedPost)
             .subscribe(retur => {
                 this.getAllPosts();
-                this.showArray = true;
+                this.showTable = true;
                 this.showDetails = false;
                 this.showSchemaRegister = false;
             },
@@ -151,7 +147,7 @@ export class SPA implements OnInit {
                 error => console.log(error)
         );
 
-        this.showArray = false;
+        this.showTable = false;
         this.showDetails = false;
         this.showSchemaRegister = true;
         console.log(id);
@@ -172,7 +168,7 @@ export class SPA implements OnInit {
             .subscribe(
                 retur => {
                     this.getAllPosts();
-                    this.showArray = true;
+                    this.showTable = true;
                     this.showDetails = false;
                     this.showSchemaRegister = false;
                 },
@@ -185,7 +181,7 @@ export class SPA implements OnInit {
             .subscribe(post => {
                 this.singlePost = post;
                 this.loading = false;
-                this.showArray = false;
+                this.showTable = false;
                 this.showDetails = true;
                 this.showSchemaRegister = false;
 
@@ -220,12 +216,12 @@ export class SPA implements OnInit {
     }
 
     searchArray() {
-        var filter, value, row, cols, filtered, i, j, table;
-        filter = document.getElementById("searchbar") as HTMLInputElement;
-        value = filter.value.toUpperCase();
+        var filter, value, row, cols, filtered, i, j, table; // vaiabler
+        filter = document.getElementById("searchbar") as HTMLInputElement; // henter HTML-input
+        value = filter.value.toUpperCase(); // henter verdien fra input
 
-        table = document.getElementById("display") as HTMLTableElement;
-        row = table.getElementsByTagName("tr") as HTMLTableRowElement;
+        table = document.getElementById("display") as HTMLTableElement; // henter HTML-tabellen
+        row = table.getElementsByTagName("tr") as HTMLTableRowElement; // henter radene fra tabellen
 
         for (i = 1; i < row.length; i++) { // løkke som går gjennom alle radene i tabelen
             filtered = false; // variabel som brukes til å markere om en rad skal vises eller ikke
