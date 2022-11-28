@@ -16,7 +16,12 @@ namespace WebAppOppg2.Models
         public string LastName { get; set; }
         [RegularExpression(@"[0-9a-zA-ZæøåÆØÅ. \-]{2,30}")]
         public string Username { get; set; }
-        [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,30}")]
+        public byte[] PasswordHashed { get; set; }
+
+        [NotMapped]
+
         public string Password { get; set; }
+
+        public byte[] Salt { get; set; }
     }
 }

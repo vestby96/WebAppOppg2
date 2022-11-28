@@ -37,6 +37,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="DAL\User\" />
+    <Folder Include="DAL\Post\" />
     <Folder Include="Logs\" />
   </ItemGroup>
 

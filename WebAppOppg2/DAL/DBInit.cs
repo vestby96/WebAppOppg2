@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
 using WebAppOppg2.Models;
+using static WebAppOppg2.Controllers.UserController;
 
 namespace WebAppOppg2.DAL
 {
@@ -13,13 +14,16 @@ namespace WebAppOppg2.DAL
         {
             var serviceScope = app.ApplicationServices.CreateScope();
 
-            var db = serviceScope.ServiceProvider.GetService<PostContext>();
+            var db = serviceScope.ServiceProvider.GetService<DatabaseContext>();
 
             // må slette og opprette databasen hver gang når den skal initieres (seed`es)
-            db.Database.EnsureDeleted();
+            try
+            {
+                db.Database.EnsureDeleted();
+            } catch { }
             db.Database.EnsureCreated();
 
-            var post1 = new Posts
+            var post1 = new Post
             {
                 datePosted = Convert.ToDateTime("2022-11-15T13:45:30"),
                 dateOccured = Convert.ToDateTime("2009-06-11T21:45:00"),
@@ -30,7 +34,7 @@ namespace WebAppOppg2.DAL
                 summary = "Fly på himmel over mitt hode"
             };
 
-            var post2 = new Posts
+            var post2 = new Post
             {
                 datePosted = Convert.ToDateTime("2022-10-16T12:45:00"),
                 dateOccured = Convert.ToDateTime("1995-02-05T23:45:00"),
@@ -42,14 +46,14 @@ namespace WebAppOppg2.DAL
             };
 
             //Lag en påloggingsbruker
-            var user = new Users();
+            var user = new User();
             user.FirstName = "John";
             user.LastName = "Doe";
             user.Username = "admin";
             string password = "admin123";
-            byte[] salt = PostRepository.MakeSalt();
-            byte[] hash = PostRepository.MakeHash(password, salt);
-            user.Password = hash;
+            byte[] salt = UserRepository.MakeSalt();
+            byte[] hash = UserRepository.MakeHash(password, salt);
+            user.PasswordHashed = hash;
             user.Salt = salt;
 
             db.Users.Add(user);

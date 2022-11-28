@@ -24,7 +24,7 @@ namespace WebAppOppg2
         {
             services.AddControllers();
 
-            services.AddDbContext<PostContext>(options =>
+            services.AddDbContext<DatabaseContext>(options =>
                             options.UseSqlite("Data Source=Post.db"));
             services.AddScoped<IPostRepository, PostRepository>();
 
