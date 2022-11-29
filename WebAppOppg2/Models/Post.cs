@@ -6,7 +6,7 @@ namespace WebAppOppg2.Models
     public class Post
     {
         public int id { get; set; }
-        public DateTime datePosted { get; set; }
+        public string datePosted { get; set; }
         public DateTime dateOccured { get; set; }
         [RegularExpression(@"[a-zA-ZæøåÆØÅ. \-]{2,30}")]
         public string country { get; set; }

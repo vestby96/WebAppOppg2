@@ -24,9 +24,8 @@ namespace WebAppOppg2.DAL
             try
             {
                 var newPost = new Post();
-                //newPost.Id = inPost.Id;
-                //newPost.DatePosted = inPost.DatePosted;
-                //newPost.DateOccured = inPost.DateOccured;
+                newPost.datePosted = inPost.datePosted;
+                newPost.dateOccured = inPost.dateOccured;
                 newPost.country = inPost.country;
                 newPost.city = inPost.city;
                 newPost.address = inPost.address;
@@ -104,6 +103,7 @@ namespace WebAppOppg2.DAL
             try
             {
                 var editObject = await _db.Posts.FindAsync(editPost.id);
+                editObject.datePosted = editPost.datePosted;
                 editObject.dateOccured = editPost.dateOccured;
                 editObject.country = editPost.country;
                 editObject.city = editPost.city;
