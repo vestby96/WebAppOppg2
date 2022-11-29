@@ -6,7 +6,7 @@ namespace WebAppOppg2.DAL
 {
     public interface IUserRepository
     {
-        Task<bool> LoggInn(User user);
+        Task<string> LoggInn(User user);
         Task<bool> Register(User user);
     }
 }

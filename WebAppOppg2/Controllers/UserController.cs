@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Castle.Core.Configuration;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -14,6 +16,7 @@ namespace WebAppOppg2.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private IConfiguration _config;
 
         private IUserRepository _db;
 
@@ -26,7 +29,6 @@ namespace WebAppOppg2.Controllers
         }
 
         [HttpPost]
-
         public async Task<ActionResult> Register(User inUser)
         {
             if (ModelState.IsValid)
@@ -43,21 +45,19 @@ namespace WebAppOppg2.Controllers
             return BadRequest();
         }
 
-
-        public async Task<ActionResult> LoggInn(User user)
+        [HttpGet]
+        public async Task<ActionResult> Authorize([FromQuery] User user) //[FromQuery] User..
         {
-            if (ModelState.IsValid)
+            if(string.IsNullOrEmpty(user.Username) || string.IsNullOrEmpty(user.Password))
+                return StatusCode(401, new { ErrorMsg = "Kunne ikke validere bruker, input mangler" });
+            var userToken = await _db.LoggInn(user);
+            if (string.IsNullOrEmpty(userToken))
             {
-                bool returnOK = await _db.LoggInn(user);
-                if (!returnOK)
-                {
-                    _log.LogInformation("Innloggingen feilet for bruker" + user.Username);
-                    return Ok(false);
-                }
-                return Ok(true);
+                _log.LogInformation("Innloggingen feilet for bruker" + user.Username);
+                return StatusCode(401, new { ErrorMsg = "Kunne ikke validere bruker"});
             }
-            _log.LogInformation("Feil i inputvalidering");
-            return BadRequest("Feil i inputvalidering på server");
+            return Ok(new { Token = userToken });
         }
+
     }
 }

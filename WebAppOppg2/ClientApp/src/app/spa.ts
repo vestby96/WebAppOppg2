@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit } from "@angular/core";
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Post } from "./Post";
 
@@ -14,6 +14,7 @@ export class SPA {
     allPosts: Array<Post>;
     schema: FormGroup;
     loading: boolean;
+    _headers: HttpHeaders;
 
     validation = {
         id: [""],
@@ -38,6 +39,10 @@ export class SPA {
 
     constructor(private _http: HttpClient, private fb: FormBuilder) {
         this.schema = fb.group(this.validation);
+        this._headers = new HttpHeaders({ 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + sessionStorage.getItem('Token')
+        });
     }
 
     ngOnInit() {
@@ -47,7 +52,7 @@ export class SPA {
     }
 
     getAllPosts() {
-        this._http.get<Post[]>("api/post/")
+        this._http.get<Post[]>("api/post/", { headers: this._headers })
             .subscribe(posts => {
                 this.allPosts = posts;
                 this.loading = false;
@@ -102,7 +107,7 @@ export class SPA {
         savedPost.shape = this.schema.value.shape;
         savedPost.summary = this.schema.value.summary;
 
-        this._http.post("api/post", savedPost)
+        this._http.post("api/post", savedPost, { headers: this._headers })
             .subscribe(retur => {
                 this.getAllPosts();
                 this.showSchemaRegister = false;
@@ -113,7 +118,7 @@ export class SPA {
     };
 
     deletePost(id: number) {
-        this._http.delete("api/post/" + id)
+        this._http.delete("api/post/" + id, { headers: this._headers })
             .subscribe(retur => {
                 this.getAllPosts();
             },
@@ -122,7 +127,7 @@ export class SPA {
     };
 
     editPost(id: number) {
-        this._http.get<Post>("api/post/" + id)
+        this._http.get<Post>("api/post/" + id, { headers: this._headers })
             .subscribe(
                 post => {
                     this.schema.patchValue({ id: post.id });
@@ -151,7 +156,7 @@ export class SPA {
         editPost.shape = this.schema.value.shape;
         editPost.summary = this.schema.value.summary;
 
-        this._http.put("api/post/", editPost)
+        this._http.put("api/post/", editPost, { headers: this._headers })
             .subscribe(
                 retur => {
                     this.getAllPosts();
