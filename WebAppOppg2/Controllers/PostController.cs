@@ -19,7 +19,7 @@ namespace WebAppOppg2.Controllers
         private IPostRepository _db;
 
         private ILogger<PostController> _log;
-
+  
         public PostController(IPostRepository db, ILogger<PostController> log)
         {
             _db = db;
@@ -95,5 +95,7 @@ namespace WebAppOppg2.Controllers
             _log.LogInformation("Error in inputvalidation");
             return BadRequest();
         }
+
+       
     }
 }
