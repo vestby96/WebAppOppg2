@@ -28,7 +28,7 @@ namespace WebAppOppg2.Controllers
                 Pong = DateTime.UtcNow.ToString("s", CultureInfo.InvariantCulture)
             });
         }
-
+//gdkgwegnew dette gjør en kode
         [Authorize]
         [HttpPost]
         public async Task<ActionResult> Greet(TestRequest test)

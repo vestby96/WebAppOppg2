@@ -17,6 +17,7 @@ namespace WebAppOppg2.DAL
         public PostRepository(DatabaseContext db)
         {
             _db = db;
+
         }
 
         public async Task<bool> Save(Post inPost)

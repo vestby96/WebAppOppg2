@@ -27,7 +27,7 @@ namespace WebAppOppg2.Controllers
             _db = db;
             _log = log;
         }
-
+       
         [HttpPost]
         public async Task<ActionResult> Register(User inUser)
         {
