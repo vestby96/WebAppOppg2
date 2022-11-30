@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using WebAppOppg2.DAL;
 using System.Text;
+using System;
 
 namespace WebAppOppg2
 {
@@ -59,6 +60,14 @@ namespace WebAppOppg2
                 };
             });
             services.AddAuthorization();
+
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = ".AdventureWorks.Session";
+                options.IdleTimeout = TimeSpan.FromSeconds(1600);
+                options.Cookie.IsEssential = true;
+            });
+            services.AddDistributedMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,6 +97,7 @@ namespace WebAppOppg2
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
