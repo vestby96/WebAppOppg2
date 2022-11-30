@@ -5,11 +5,11 @@ import { Register } from './register/register';
 import { SPA } from './spa';
 
 
-const appRoots: Routes = [
+const appRoots: Routes = [ //bestemmer hvilken component som vises avhengig av path
     { path: 'login', component: Login },
     { path: 'register', component: Register },
     { path: 'spa', component: SPA, },
-    { path: '', redirectTo: 'login', pathMatch: 'full' }
+    { path: '', redirectTo: 'login', pathMatch: 'full' } //hvis ingenting oppgitt gå til login
 ]
 
 @NgModule({

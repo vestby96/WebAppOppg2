@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
 using WebAppOppg2.Models;
-using static WebAppOppg2.DAL.UserRepository;
 
 namespace WebAppOppg2.DAL
 {
     public interface IUserRepository
-    {
+    {//disse trengs for å kunne referer til controller, repository
         Task<string> LoggInn(User user);
         Task<bool> Register(User user);
     }

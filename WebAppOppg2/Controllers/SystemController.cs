@@ -11,6 +11,7 @@ using WebAppOppg2.Models;
 using System.Globalization;
 
 namespace WebAppOppg2.Controllers
+    //Denne filen er brukt for å teste api signaler mellom server og database ved bruk av f.eks postman
 {
     [Route("api/[controller]")]
     [ApiController]

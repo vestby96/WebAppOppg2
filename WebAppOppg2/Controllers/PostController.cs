@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using WebAppOppg2.DAL;
 using WebAppOppg2.Models;
@@ -35,7 +31,7 @@ namespace WebAppOppg2.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool returOK = await _db.Save(inPost);
+                bool returOK = await _db.Save(inPost); //Lager en ny post i databasen
                 if (!returOK)
                 {
                     _log.LogInformation("Post was NOT saved");//dette er logging, som logger hva som gikk galt, og under returnerer en badRequest fordi ReturnOK ble feil

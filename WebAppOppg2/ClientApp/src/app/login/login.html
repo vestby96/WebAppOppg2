@@ -1,10 +1,13 @@
-﻿<div class="card">
+﻿<!--Lager skjema for innlogging med validering-->
+<div class="card">
     <h4 class="card-header">Login</h4>
     <div class="card-body">
+        <!--Kjører onSubmit() funksjonen når vi trykker på login kappen-->
         <form [formGroup]="skjema" (ngSubmit)="onSubmit()">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" formControlName="username" class="form-control" />
+                <!--Tekst varsel hvis valideringe ikke er godkjent-->
                 <p class="alert alert-warning" [hidden]="skjema.controls.username.valid || (skjema.controls.username.pristine && !submitted)">
                     You need to add a username!
                 </p>
@@ -12,14 +15,17 @@
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" formControlName="password" class="form-control" />
+                <!--Tekst varsel hvis valideringe ikke er godkjent-->
                 <p class="alert alert-warning" [hidden]="skjema.controls.password.valid || (skjema.controls.password.pristine && !submitted)">
                     Password needs to be longer than 6 characters!
                 </p>
             </div>
             <div class="form-group">
+                <!--Kan ikke trykke på knappen med mindre valideringen er godkjent-->
                 <button [disabled]="!skjema.valid" class="btn btn-primary">
                     Login
                 </button>
+                <!--Sender oss til registrerings siden-->
                 <a routerLink="/register">Register</a>
             </div>
         </form>

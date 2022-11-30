@@ -73,8 +73,8 @@ namespace WebAppOppg2.DAL
             user.LastName = "Doe";
             user.Username = "admin";
             string password = "admin123";
-            byte[] salt = UserRepository.MakeSalt();
-            byte[] hash = UserRepository.MakeHash(password, salt);
+            byte[] salt = UserRepository.MakeSalt(); //Lager en salt til brukeren
+            byte[] hash = UserRepository.MakeHash(password, salt); //Lager hash med bruk av passord og salt
             user.PasswordHashed = hash;
             user.Salt = salt;
             //legger til postene i en database posts og brukeren i en users db

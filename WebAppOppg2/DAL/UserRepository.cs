@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
@@ -9,9 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Serilog;
 using WebAppOppg2.Models;
-using Castle.Core.Internal;
 
 namespace WebAppOppg2.DAL
 {
@@ -25,20 +22,20 @@ namespace WebAppOppg2.DAL
         }
 
         public async Task<bool> Register(User user)
-        {
+        {//dette er innlegging av nye brukere, hvor data blir flyttet til databasen. Vi har også en catch hvis noe skulle gå feil
             try
             {
                 var newUser = new User();
                 newUser.FirstName = user.FirstName;
                 newUser.LastName = user.LastName;
                 newUser.Username = user.Username;
-                byte[] salt = UserRepository.MakeSalt();
-                byte[] hash = UserRepository.MakeHash(user.Password, salt);
+                byte[] salt = UserRepository.MakeSalt(); //Kaler på MakeSalt() og lagere salt
+                byte[] hash = UserRepository.MakeHash(user.Password, salt); //Kaller på MakeHash() og lagrer resultatet
                 newUser.PasswordHashed = hash;
                 newUser.Salt = salt;
 
-                _db.Users.Add(newUser);
-                await _db.SaveChangesAsync();
+                _db.Users.Add(newUser); //legger den nye brukeren inn i databasen
+                await _db.SaveChangesAsync(); //lagrer endringene i databasen
                 return true;
             }
             catch
@@ -47,7 +44,16 @@ namespace WebAppOppg2.DAL
             }
         }
 
-        public static byte[] MakeHash(string passord, byte[] salt)
+        public static byte[] MakeSalt() //Lager et salt for en bruker
+        {
+            var csp = new RNGCryptoServiceProvider();
+            var salt = new byte[24];
+            csp.GetBytes(salt);
+            return salt;
+        }
+
+
+        public static byte[] MakeHash(string passord, byte[] salt) //Lager et hash for en bruker
         {
             return KeyDerivation.Pbkdf2(
                                 password: passord,
@@ -56,31 +62,25 @@ namespace WebAppOppg2.DAL
                                 iterationCount: 1000,
             numBytesRequested: 32);
         }
-
-        public static byte[] MakeSalt()
-        {
-            var csp = new RNGCryptoServiceProvider();
-            var salt = new byte[24];
-            csp.GetBytes(salt);
-            return salt;
-        }
-
-        public async Task<string> LoggInn(User user)
+        public async Task<string> LoggInn(User user) 
         {
             try
             {
+                //Sjekker om vi finner et matchende brukernavn i databasen
                 User funnetBruker = await _db.Users.FirstOrDefaultAsync(b => b.Username.ToLower()==user.Username.ToLower().Trim());
-                //Validate Password
+                //Hvis vi ikke finner en bruker så kast en exeption
                 if (funnetBruker == null) {
                     throw new Exception();
                 }
-                byte[] hash = MakeHash(user.Password, funnetBruker.Salt);
-                bool passwordMatch = hash.SequenceEqual(funnetBruker.PasswordHashed);
+                //Validate Password
+                byte[] hash = MakeHash(user.Password, funnetBruker.Salt); //Lager hash basert på passord fra input og salt fra databasen
+                bool passwordMatch = hash.SequenceEqual(funnetBruker.PasswordHashed); //Sjekker om nytt hash matcher hash i databasen
                 if(passwordMatch is false) return string.Empty;
 
-                var issuer = AppData.JwtIssuer;
+                var issuer = AppData.JwtIssuer; 
                 var key = Encoding.ASCII.GetBytes(AppData.JwtKey);
-                
+
+                //Lager ny tokenDescriptor basert på bruker info
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new[]
@@ -90,21 +90,22 @@ namespace WebAppOppg2.DAL
                         new Claim("Firstname", funnetBruker.FirstName),
                         new Claim("Lastname", funnetBruker.LastName)
                     }),
-                    Expires = DateTime.UtcNow.AddDays(30),
+                    Expires = DateTime.UtcNow.AddDays(30), //Token er gyldig i 30 dager
                     Issuer = issuer,
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
                 };
+                //Lager ny token for bruker
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 var jwtToken = tokenHandler.WriteToken(token);
                 var stringToken = tokenHandler.WriteToken(token);
 
-                return stringToken;
+                return stringToken; //returnerer brukerens token
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString()); 
-                return string.Empty;
+                return string.Empty; //hvis noe går galt retuner en tom string
             }
         }
     }

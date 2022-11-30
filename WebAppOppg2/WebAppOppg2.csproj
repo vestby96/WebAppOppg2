@@ -25,8 +25,16 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="DAL\Post\**" />
+    <Compile Remove="DAL\User\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="DAL\Post\**" />
+    <Content Remove="DAL\User\**" />
+    <EmbeddedResource Remove="DAL\Post\**" />
+    <EmbeddedResource Remove="DAL\User\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="DAL\Post\**" />
+    <None Remove="DAL\User\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
@@ -39,8 +47,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DAL\User\" />
-    <Folder Include="DAL\Post\" />
     <Folder Include="Logs\" />
   </ItemGroup>
 
