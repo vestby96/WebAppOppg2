@@ -31,7 +31,7 @@ namespace WebAppOppg2.DAL
                 newUser.FirstName = user.FirstName;
                 newUser.LastName = user.LastName;
                 newUser.Username = user.Username;
-                byte[] salt = UserRepository.MakeSalt();
+                byte[] salt = MakeSalt();
                 byte[] hash = UserRepository.MakeHash(user.Password, salt);
                 newUser.PasswordHashed = hash;
                 newUser.Salt = salt;
@@ -68,15 +68,15 @@ namespace WebAppOppg2.DAL
         {
             try
             {
-                User funnetBruker = await _db.Users.FirstOrDefaultAsync(b => b.Username.ToLower()==user.Username.ToLower().Trim());
+                User funnetBruker = await _db.Users.FirstOrDefaultAsync(b => b.Username.ToLower() == user.Username.ToLower().Trim());
                 //Validate Password
                 byte[] hash = MakeHash(user.Password, funnetBruker.Salt);
                 bool passwordMatch = hash.SequenceEqual(funnetBruker.PasswordHashed);
-                if(passwordMatch is false) return string.Empty;
+                if (passwordMatch is false) return string.Empty;
 
                 var issuer = AppData.JwtIssuer;
                 var key = Encoding.ASCII.GetBytes(AppData.JwtKey);
-                
+
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new[]
@@ -99,7 +99,7 @@ namespace WebAppOppg2.DAL
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString()); 
+                Console.WriteLine(e.ToString());
                 //_log.LogInformation(e.Message);
                 return string.Empty;
             }
