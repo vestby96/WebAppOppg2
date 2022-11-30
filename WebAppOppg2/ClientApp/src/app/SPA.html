@@ -2,11 +2,13 @@
     <h2>   UFO forum: Single Page Application</h2>
     <div>
         <div class="col-md-12" *ngIf="showTable">
+            <!--ngif er en if setning som viser load post hvis det ikke er loadet inn enda-->
             <div *ngIf="loading">Loading posts.....</div>
             <input id="searchbar" placeholder="Search" (keyup)="searchArray()" />
             <table id="display" class="table table-bordered table-condensed">
                 <thead>
                     <tr>
+                        <!--gjør det mulig å trykke på begge datavariablen i databasen-->
                         <th style="cursor: pointer;" (click)="sortByDatePosted()">Date Posted</th>
                         <th style="cursor: pointer;" (click)="sortByDateOccured()">Date Occured</th>
                         <th>Country</th>
@@ -16,25 +18,27 @@
                         <th></th>
                         <th></th>
                     </tr>
-                </thead>
+                </thead><!--ngfor er at den lopper gjennom all dataen i databasen, post of all post-->
                 <tbody *ngFor="let post of allPosts">
                     <tr>
+                        <!--under er all dataen i en tabel-->
                         <td>{{post.datePosted}}</td>
                         <td>{{post.dateOccured}}</td>
                         <td>{{post.country}}</td>
                         <td>{{post.city}}</td>
                         <td>{{post.address}}</td>
                         <td>{{post.shape}}</td>
+                        <!--knappene for delete edit og detaljer -->
                         <td><button class="btn btn-danger" (click)="deletePost(post.id)">Delete</button></td>
                         <td><button class="btn btn-success" (click)="editPost(post.id)">Edit</button></td>
                         <td><button class="btn btn-primary" (click)="postDetails(post.id)">Details</button></td>
                     </tr>
                 </tbody>
-            </table>
+            </table><!--new post knapp og logout knapp-->
             <button class='btn btn-primary' (click)='registerPost()'>New Post</button>
             <div style="350px" align="right"><button class="btn btn-info pull-right" routerLink="/login">Logout</button></div>
         </div>
-
+        <!--en ny if som enten ikke viser showdetalier eller viser det, som vil skje når man trykker detlajeknappen og alt i ts, controller rep osv funker -->
         <div class="col-md-12" *ngIf="showDetails">
             <div *ngIf="loading">Loading post.....</div>
             <table class="table table-bordered table-condensed">
@@ -75,6 +79,7 @@
 </div>
 
 <div class="container">
+    <!--denne er både for registering av ny post eller redigering av tidligere post-->
     <div class="col-md-4" *ngIf="showSchemaRegister || showSchemaEdit">
         <form [formGroup]="schemaRegister" (ngSubmit)="onSubmit()">
             <input class="form-control" formControlName="id" type="hidden" />
@@ -83,7 +88,7 @@
                 <input type="datetime-local" class="form-control" formControlName="dateOccured" />
             </div>
             <div class="form-group">
-                <label>Country</label>
+                <label>Country</label><!--dette er for alle variablen som skal legges inn eller redigers de neste nedover også-->
                 <input class="form-control" formControlName="country" />
                 <p class="alert alert-warning" [hidden]="schemaRegister.controls.country.valid || (schemaRegister.controls.country.pristine && !submitted)">
                     Please fill out country
@@ -118,6 +123,7 @@
                 </p>
             </div>
             <div class="form-group">
+                <!--her er det to knapper hvor disabled blir avgjort av om det er registering eller edit-->
                 <button type="submit" *ngIf="showSchemaRegister" [disabled]="!schemaRegister.valid" class="btn btn-success">Post</button>
                 <button type="submit" *ngIf="showSchemaEdit" [disabled]="!schemaRegister.valid" class="btn btn-primary">Edit</button>
                 <button class="btn btn-primary" (click)="backToList()">Back</button>
