@@ -9,7 +9,7 @@ using Serilog;
 using WebAppOppg2.Models;
 
 namespace WebAppOppg2.DAL
-{
+{//dette lå tidligere i controllersiden men ved å følge DAL så blir det mer oversiktlig og pent og derfor ligger det her
     public class PostRepository : IPostRepository
     {
         private readonly DatabaseContext _db;
@@ -20,7 +20,7 @@ namespace WebAppOppg2.DAL
         }
 
         public async Task<bool> Save(Post inPost)
-        {
+        {//dette er innlegging av ny foruminnlegg, hvor masse data blir flyttet til databasen. er også en catch hvis noe skulle gå feil
             try
             {
                 var newPost = new Post();
@@ -44,7 +44,7 @@ namespace WebAppOppg2.DAL
 
 
         public async Task<List<Post>> GetAll()
-        {
+        {//get all henter linjene i databasen til Post
             try
             {
                 List<Post> allPosts = await _db.Posts.Select(p => new Post
@@ -67,7 +67,7 @@ namespace WebAppOppg2.DAL
         }
 
         public async Task<bool> Delete(int id)
-        {
+        {//sletter en(id) utifra hvilken rad man trykker på
             try
             {
                 Post aDBPost = await _db.Posts.FindAsync(id);
@@ -82,7 +82,7 @@ namespace WebAppOppg2.DAL
         }
 
         public async Task<Post> GetOne(int id)
-        {
+        {// henter ut en, id bestemmer hvilken, som også blir aktivert ved å trykke på en knapp
             Post aPost = await _db.Posts.FindAsync(id);
             var getPost = new Post()
             {
@@ -99,7 +99,7 @@ namespace WebAppOppg2.DAL
         }
 
         public async Task<bool> Edit(Post editPost)
-        {
+        {//denne editerer en eksisterende item i en database
             try
             {
                 var editObject = await _db.Posts.FindAsync(editPost.id);
