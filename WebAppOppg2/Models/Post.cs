@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace WebAppOppg2.Models
 {
     public class Post
-    {
+    {//get og set med regix begrensinger på hva som er tilatt å legge inn
         public int id { get; set; }
         public string datePosted { get; set; }
         public DateTime dateOccured { get; set; }

@@ -41,8 +41,7 @@ export class Login {
                 sessionStorage.setItem('Token', retur.token)
                 this.router.navigate(['/spa']);
             },
-                error =>
-                {
+                error => {
                     console.log(error)
                     this.skjema.patchValue({ password: '' });
                 }
