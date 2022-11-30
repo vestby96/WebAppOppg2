@@ -1,5 +1,5 @@
 ﻿<div class="container">
-    <h2 class="text-center"> Norwegian Association for UFO Observations </h2>
+    <h2 class="text-center" style="margin-top:15px; margin-bottom: 15px"> Norwegian Association for UFO Observations </h2>
     <div>
         <div class="col-md-12" *ngIf="showTable">
             <!--ngif er en if setning som viser load post hvis det ikke er loadet inn enda-->
@@ -35,9 +35,13 @@
                     </tr>
                 </tbody>
             </table><!--new post knapp og logout knapp-->
-            <button class='btn btn-primary' (click)='registerPost()'>New Post</button>
-            <div style="350px" align="right"><button class="btn btn-info pull-right" routerLink="/login">Logout</button></div>
-        </div>
+            <div style="display: flex">
+                <div><button class='btn btn-primary' (click)='registerPost()'>New Post</button></div>
+                <div align="right" style="flex: auto">
+                <button class="btn btn-info pull-right" routerLink="/login">Logout</button>
+                </div>
+            </div>
+                    </div>
         <!--en ny if som enten ikke viser showdetalier eller viser det, som vil skje når man trykker detlajeknappen og alt i ts, controller rep osv funker -->
         <div class="col-md-12" *ngIf="showDetails">
             <div *ngIf="loading">Loading post.....</div>
@@ -71,14 +75,14 @@
                     <td>{{singlePost.summary}}</td>
                 </tr>
             </table>
-            <button class="btn btn-danger" (click)="deletePost(singlePost.id)">Delete</button>
-            <button class="btn btn-success" (click)="editPost(singlePost.id)">Edit</button>
+            <button class="btn btn-danger" (click)="deletePost(singlePost.id)">Delete</button> &nbsp;
+            <button class="btn btn-success" (click)="editPost(singlePost.id)">Edit</button> &nbsp;
             <button class="btn btn-primary" (click)="backToList()">Back</button>
         </div>
     </div>
 </div>
 
-<div class="container">
+<div class="container" style="display: flex; justify-content: center;">
     <!--denne er både for registering av ny post eller redigering av tidligere post-->
     <div class="col-md-4" *ngIf="showSchemaRegister || showSchemaEdit">
         <form [formGroup]="schemaRegister" (ngSubmit)="onSubmit()">
@@ -125,7 +129,7 @@
             <div class="form-group">
                 <!--her er det to knapper hvor disabled blir avgjort av om det er registering eller edit-->
                 <button type="submit" *ngIf="showSchemaRegister" [disabled]="!schemaRegister.valid" class="btn btn-success">Post</button>
-                <button type="submit" *ngIf="showSchemaEdit" [disabled]="!schemaRegister.valid" class="btn btn-primary">Edit</button>
+                <button type="submit" *ngIf="showSchemaEdit" [disabled]="!schemaRegister.valid" class="btn btn-success">Edit</button> &nbsp;
                 <button class="btn btn-primary" (click)="backToList()">Back</button>
             </div>
         </form>
