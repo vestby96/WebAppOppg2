@@ -51,48 +51,50 @@ namespace TestProject3
                 shape = "plate",
                 summary = "en talerken fløy gjennom himmelen"
             };
-            var postListe = new List<Post>();//laging av liste og add post(n) til listen
-            postListe.Add(post1);
-            postListe.Add(post2);
-            postListe.Add(post3);
+            var postList = new List<Post>();//laging av liste og add post(n) til listen
+            postList.Add(post1);
+            postList.Add(post2);
+            postList.Add(post3);
             // lager to objekter for å simulere kaller repositoryet  
             var mockLogger = new Mock<ILogger<PostController>>();
             var mockPost = new Mock<IPostRepository>();
             //her begynner testen hvor vi bruker de simulerte mockene over og, kalle listen og returnerer postliste
-            mockPost.Setup(p => p.GetAll()).ReturnsAsync(postListe);
+            mockPost.Setup(p => p.GetAll()).ReturnsAsync(postList);
             // vi setter opp repository med mockpost og mocklogger
             var postController = new PostController(mockPost.Object, mockLogger.Object);
             //act starter her, denne får det som blir retunert inn hit gjennom repositoryet da mer spesifikt gjennom postcontroller sin GetAll funsjon
             var resultat = await postController.GetAll();
-            var fromController = resultat.Result as OkObjectResult;
-            var res = fromController.Value;
-
-            //assert sjekker om betingelsene vi har satt er nådd, som i dette tilfeltet er om postliste og res er like 
-            Assert.Equal(postListe, res);
+            // definerer resultat som OkObjectResult type, og henter ut verdien
+            var okObjectResult = resultat as OkObjectResult;
+            var model = okObjectResult.Value;
+            // skjekker om verdien ut matcher verdien inn
+            Assert.Equal(postList, model);
         }
         [Fact]
         public async Task GetAllNotOki()//teste om alle er tomme 
         {
             //Arrange starter her
-            var postliste = new List<Post>();
+            var postList = new List<Post>();
             // lager to objekter for å simulere kaller repositoryet  
             var mockLogger = new Mock<ILogger<PostController>>();
-            var mockPost = new List<IPostRepository>();
+            var mockPost = new Mock<IPostRepository>();
             //her begynner testen hvor vi bruker de simulerte mockene over og returner null
-            mockPost.Setup(p => p.GetAll()).ReturnsAsync(() => null);
+            mockPost.Setup(p => p.GetAll()).ReturnsAsync(postList);
             // vi setter opp repository med mockpost og mocklogger
             var postController = new PostController(mockPost.Object, mockLogger.Object);
-            List<Post> resultat = await postController.GetAll();
-
-            //assert sjekker om resultat er true i dette tilfellet
-            Assert.True(resultat);
+            var resultat = await postController.GetAll();
+            // definerer resultat som OkObjectResult type, og henter ut verdien
+            var okObjectResult = resultat as OkObjectResult;
+            var model = okObjectResult.Value;
+            // skjekker om verdien ut matcher verdien inn
+            Assert.Equal(postList, model);
         }
 
         [Fact]
         public async Task SaveOki()//tester om save ble godkjent/gjennomført riktig ved bruk av testdata
         {//lager en mock variabel som skal brukes
             //Arrange starter her
-            var innforuminnlegg = new Post
+            var inPost = new Post
             {
                 id = 999,
                 datePosted = "2021-09-06",
@@ -106,12 +108,12 @@ namespace TestProject3
             var mockLogger = new Mock<ILogger<PostController>>();
             var mockPost = new Mock<IPostRepository>();
             //her begynner testen hvor vi bruker de simulerte mockene over og, sender innforuminnlegg og returnerer true
-            mockPost.Setup(p => p.Save(innforuminnlegg)).ReturnsAsync(true);
+            mockPost.Setup(p => p.Save(inPost)).ReturnsAsync(true);
             // vi setter opp repository med mockpost og mocklogger
             var postController = new PostController(mockPost.Object, mockLogger.Object);
-
-            var resultat = await postController.Save(innforuminnlegg);
-            //assert sjekker om ok blir returnert til oss
+            
+            var resultat = await postController.Save(inPost);
+            //assert sjekker om ok blir returnert
             Assert.IsType<OkResult>(resultat);
         }
 
@@ -119,7 +121,7 @@ namespace TestProject3
         public async Task SaveNotOki()//sjekker motsatt av over om den ikke ble godkjent
         {//lager en mock variabel som skal brukes
             //Arrange starter her
-            var innforuminnlegg = new Post
+            var inPost = new Post
             {
                 id = 999,
                 datePosted = "2021-09-06",
@@ -133,12 +135,38 @@ namespace TestProject3
             var mockLogger = new Mock<ILogger<PostController>>();
             var mockPost = new Mock<IPostRepository>();
             //her begynner testen hvor vi bruker de simulerte mockene over og, hvor vi kaller innforuminnlegg og returnerer false
-            mockPost.Setup(p => p.Save(innforuminnlegg)).ReturnsAsync(false);
+            mockPost.Setup(p => p.Save(inPost)).ReturnsAsync(false);
             // vi setter opp repository med mockpost og mocklogger
             var postController = new PostController(mockPost.Object, mockLogger.Object);
 
-            var resultat = await postController.Save(innforuminnlegg);
-            //assert sjekker om vi fikk et badrequest resultat(returnert til oss)
+            var resultat = await postController.Save(inPost);
+            //assert sjekker om vi fikk et badrequest resultat
+            Assert.IsType<BadRequestResult>(resultat);
+        }
+        [Fact]
+        public async Task SaveNotCompleteOki()//sjekker det er mulig å legge inn post med manglende verdi
+        {//lager en mock variabel som skal brukes
+            //Arrange starter her
+            var inPost = new Post
+            {
+                id = 999,
+                datePosted = "2021-09-06",
+                dateOccured = Convert.ToDateTime("1970-01-01T01:00:00"),
+                city = "",
+                country = "norge",
+                shape = "round",
+                summary = "så en rund kladd i himmelen med lys på"
+            };
+            // lager to objekter for å simulere kaller repositoryet  
+            var mockLogger = new Mock<ILogger<PostController>>();
+            var mockPost = new Mock<IPostRepository>();
+            //her begynner testen hvor vi bruker de simulerte mockene over og, hvor vi kaller innforuminnlegg og returnerer false
+            mockPost.Setup(p => p.Save(inPost)).ReturnsAsync(false);
+            // vi setter opp repository med mockpost og mocklogger
+            var postController = new PostController(mockPost.Object, mockLogger.Object);
+
+            var resultat = await postController.Save(inPost);
+            //assert sjekker om vi fikk et badrequest resultat
             Assert.IsType<BadRequestResult>(resultat);
         }
 
@@ -146,9 +174,9 @@ namespace TestProject3
         public async Task GetOneOki()// sjekker om get one klarte å kjøres riktig ved bruk av mock data
         {//lager en mock variabel som skal brukes
             //Arrange starter her
-            var returnePost = new Post
+            var inPost = new Post
             {
-                id = 1,
+                id = 999,
                 datePosted = "2021-09-06",
                 dateOccured = Convert.ToDateTime("1970-01-01T01:00:00"),
                 city = "oslo",
@@ -160,15 +188,15 @@ namespace TestProject3
             var mockLogger = new Mock<ILogger<PostController>>();
             var mockPost = new Mock<IPostRepository>();
             //her begynner testen hvor vi bruker de simulerte mockene over og, hvor vi kaller getOne og returnerer returnepost
-            mockPost.Setup(p => p.GetOne(1)).ReturnsAsync(returnePost);
+            mockPost.Setup(p => p.GetOne(1)).ReturnsAsync(inPost);
             // vi setter opp repository med mockpost og mocklogger
-            var PostController = new PostController(mockPost.Object, mockLogger.Object);
-            var resultat = await PostController.GetOne(1);
-            Assert.Equal<Post>(returnePost, resultat);
-
-            List<Post> resultat = await postController.GetAll();
-            //assert sjekker om vi fikk true
-            Assert.True(resultat);
+            var postController = new PostController(mockPost.Object, mockLogger.Object);
+            var resultat = await postController.GetOne(1);
+            // definerer resultat som OkObjectResult type, og henter ut verdien
+            var okObjectResult = resultat as OkObjectResult;
+            var model = okObjectResult.Value;
+            // skjekker om verdien ut matcher verdien inn
+            Assert.Equal(inPost, model);
         }
         [Fact]
         public async Task GetOneNotOki()//motsatt av over
@@ -181,8 +209,8 @@ namespace TestProject3
             // vi setter opp repository med mockpost og mocklogger
             var postController = new PostController(mockPost.Object, mockLogger.Object);
             var resultat = await postController.GetOne(1);
-            //assert sjekker om resultat er null
-            Assert.Null(resultat);
+            //assert sjekker om resultat er NotFound
+            Assert.IsType<NotFoundResult>(resultat);
         }
 
         [Fact]
@@ -219,7 +247,7 @@ namespace TestProject3
         public async Task EditOki()//sjekker om edit funket riktig
         //Arrange starter her
         {//lager en mock variabel som skal brukes
-            var innforuminnlegg = new Post
+            var inPost = new Post
             {
                 id = 999,
                 datePosted = "2021-09-06",
@@ -233,21 +261,21 @@ namespace TestProject3
             var mockLogger = new Mock<ILogger<PostController>>();
             var mockPost = new Mock<IPostRepository>();
             //her begynner testen hvor vi bruker de simulerte mockene over og, hvor vi kaller innforuminnlegg og reurner true
-            mockPost.Setup(p => p.Edit(innforuminnlegg)).ReturnsAsync(true);
+            mockPost.Setup(p => p.Edit(inPost)).ReturnsAsync(true);
             // vi setter opp repository med mockpost og mocklogger
             var postController = new PostController(mockPost.Object, mockLogger.Object);
-            bool resultat = await PostController.Edit(innforuminnlegg);
+            var resultat = await postController.Edit(inPost);
             //assert sjekker om true blir returnert
-            Assert.True(resultat);
+            Assert.IsType<OkResult>(resultat);
         }
 
         [Fact]
         public async Task EditNotOki()//sjekker motsatt av over
         {//lager en mock variabel som skal brukes
             //Arrange starter her
-            var innforuminnlegg = new Post
+            var inPost = new Post
             {
-                id = 1,
+                id = 999,
                 datePosted = "2021-09-06",
                 dateOccured = Convert.ToDateTime("1970-01-01T01:00:00"),
                 city = "oslo",
@@ -259,12 +287,12 @@ namespace TestProject3
             var mockLogger = new Mock<ILogger<PostController>>();
             var mockPost = new Mock<IPostRepository>();
             //her begynner testen hvor vi bruker de simulerte mockene over og, hvor vi kaller innforuminnlegg og returner true
-            mockPost.Setup(p => p.Edit(innforuminnlegg)).ReturnsAsync(true);
+            mockPost.Setup(p => p.Edit(inPost)).ReturnsAsync(false);
             // vi setter opp repository med mockpost og mocklogger
             var postController = new PostController(mockPost.Object, mockLogger.Object);
-            bool resultat = await PostController.Edit(innforuminnlegg);
+            var resultat = await postController.Edit(inPost);
             //assert sjekker om vi fikk flase tilbake
-            Assert.False(resultat);
+            Assert.IsType<NotFoundResult>(resultat);
         }
     }
 
