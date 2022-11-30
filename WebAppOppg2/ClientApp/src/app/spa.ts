@@ -20,7 +20,7 @@ export class SPA implements OnInit{
     singlePost: Post;               // brukes for å hente ut en post
     _headers: HttpHeaders;
 
-    validation = {
+    validation = {//under er valideringen på alle inputene våre, disse har en begrensning som bestemmees av en regix. her er det symboler som er tillat og lengden på stringen som er begrensningne
         id: [""],
         datePosted: [""],
         dateOccured: [""],
@@ -55,7 +55,7 @@ export class SPA implements OnInit{
         this.showTable = true;
     }
 
-    getAllPosts() {
+    getAllPosts() {//get all koblingen fra typscriptet som blir kalllt på lengere ned i systemet
         this._http.get<Post[]>("api/post/", { headers: this._headers })
             .subscribe(posts => {
                 this.allPosts = posts;
@@ -66,7 +66,7 @@ export class SPA implements OnInit{
             );
     };
 
-    onSubmit() {
+    onSubmit() {//trykking av knappen vil kjøre dette og save post, eller editpost hvis den er redigert data fram db
         if (this.showSchemaRegister) {
             this.savePost();
         }
@@ -94,14 +94,14 @@ export class SPA implements OnInit{
         this.showSchemaEdit = false;
     }
 
-    backToList() {
+    backToList() {//bestemmer hva som er synling på spa siden vår når man går tilbake til listen, altså back knappen til hovedsiden
         this.showTable = true;
         this.showDetails = false;
         this.showSchemaRegister = false;
         this.showSchemaEdit = false;
     }
 
-    savePost() {
+    savePost() {//lagrer dataen når knappet blir trykket på
         const savedPost = new Post();
 
         var date = new Date();
@@ -127,7 +127,7 @@ export class SPA implements OnInit{
                 error => console.log(error)
             );
     };
-
+    //kobles til delete lengere ned i repositoryet
     deletePost(id: number) {
         this._http.delete("api/post/" + id, { headers: this._headers })
             .subscribe(retur => {
@@ -141,7 +141,7 @@ export class SPA implements OnInit{
             );
     };
 
-    editPost(id: number) {
+    editPost(id: number) {//edit post legger in data som ligger i databasen gjennom id som identifikasjon av rad i db
         this._http.get<Post>("api/post/" + id, { headers: this._headers })
             .subscribe(
                 post => {
@@ -162,7 +162,7 @@ export class SPA implements OnInit{
         this.showSchemaEdit = true;
     }
 
-    editAPost() {
+    editAPost() {//editapost editerer en post 
         const editPost = new Post();
 
         editPost.id = this.schemaRegister.value.id;
@@ -187,7 +187,7 @@ export class SPA implements OnInit{
             );
     }
 
-    postDetails(id: number) {
+    postDetails(id: number) {//postdetaljer er koblet med detlajeknappen som viser mer data, deriblant summary også
         this._http.get<Post>("api/post/" + id, { headers: this._headers })
             .subscribe(post => {
                 this.singlePost = post;
@@ -203,7 +203,7 @@ export class SPA implements OnInit{
             );
     }
 
-    sortByDatePosted() {
+    sortByDatePosted() {//sorteringssystemet vårt på dato created og dato occured
         var sortedArray = this.allPosts;
         if (this.toggleSort) {
             sortedArray.sort((a, b) => (a.datePosted < b.datePosted) ? -1 : 1);
@@ -215,7 +215,7 @@ export class SPA implements OnInit{
         }
     }
 
-    sortByDateOccured() {
+    sortByDateOccured() {//dato occured her
         let sortedArray = this.allPosts;
         if (this.toggleSort) {
             sortedArray.sort((a, b) => (a.dateOccured < b.dateOccured) ? -1 : 1);
@@ -227,7 +227,7 @@ export class SPA implements OnInit{
         }
     }
 
-    searchArray() {
+    searchArray() {//søkebaren vår øvers som søker opp det som skrives inn og finner kun de variablene i databasen som har lik data
         var filter, value, row, cols, filtered, i, j, table; // vaiabler
         filter = document.getElementById("searchbar") as HTMLInputElement; // henter HTML-input
         value = filter.value.toUpperCase(); // henter verdien fra input

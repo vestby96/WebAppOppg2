@@ -16,13 +16,13 @@ namespace WebAppOppg2.DAL
 
             var db = serviceScope.ServiceProvider.GetService<DatabaseContext>();
 
-            // må slette og opprette databasen hver gang når den skal initieres (seed`es)
+            // sjekker om det finnes en database eller ikke
             try
             {
                 db.Database.EnsureDeleted();
             } catch { }
             db.Database.EnsureCreated();
-
+            //under er to inputer som blir laget første gang man kjører denne webapp, da blir det laget en db med 4 posts og et adminpassord
             var post1 = new Post
             {
                 datePosted = "2022-11-15",
@@ -67,7 +67,7 @@ namespace WebAppOppg2.DAL
                 summary = "Stort fly. Altfor stort til å være vanlig passasjerfly"
             };
 
-            //Lag en påloggingsbruker
+            //lager en bruker og database hvis det er første gang man åpner/starter/run denne webapp
             var user = new User();
             user.FirstName = "John";
             user.LastName = "Doe";
@@ -77,7 +77,7 @@ namespace WebAppOppg2.DAL
             byte[] hash = UserRepository.MakeHash(password, salt);
             user.PasswordHashed = hash;
             user.Salt = salt;
-
+            //legger til postene i en database posts og brukeren i en users db
             db.Users.Add(user);
             db.Posts.Add(post1);
             db.Posts.Add(post2);
