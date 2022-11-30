@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using WebAppOppg2.Models;
+using Castle.Core.Internal;
 
 namespace WebAppOppg2.DAL
 {
@@ -70,6 +71,9 @@ namespace WebAppOppg2.DAL
             {
                 User funnetBruker = await _db.Users.FirstOrDefaultAsync(b => b.Username.ToLower()==user.Username.ToLower().Trim());
                 //Validate Password
+                if (funnetBruker == null) {
+                    throw new Exception();
+                }
                 byte[] hash = MakeHash(user.Password, funnetBruker.Salt);
                 bool passwordMatch = hash.SequenceEqual(funnetBruker.PasswordHashed);
                 if(passwordMatch is false) return string.Empty;
@@ -100,7 +104,6 @@ namespace WebAppOppg2.DAL
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString()); 
-                //_log.LogInformation(e.Message);
                 return string.Empty;
             }
         }
